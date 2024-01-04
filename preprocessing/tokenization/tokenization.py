@@ -27,7 +27,5 @@ class Tokenizer:
     def __count_unique_tokens(self) -> None:
         [self.__compare_and_increment(i, j) for i in self.word_dictionary.keys() for j in self.all_words if i == j]
 
-    def __convert_to_lower_case(self) -> None:
+    def convert_to_lower_case(self) -> None:
         self.all_words = [i.lower() for i in self.all_words]
-
-    
