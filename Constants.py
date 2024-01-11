@@ -7,4 +7,6 @@ project_dir = os.getcwd()
 project_absolute_path = os.path.abspath(project_dir)
 preprocessing_dataset_path = f'{project_dir}/preprocessing/datasets/{preprocessing_dataset_name}'
 spellingCorrection_dataset_path = f'{project_dir}/spellingCorrection/datasets/{spellingCorrection_dataset_name}'
-classification_dataset_path = f'{project_dir}/classification/datasets/{classification_dataset_name}'
+classification_main_dataset_path = f'{project_dir}/classification/datasets/'
+classification_dataset_path = f'{project_dir}/classification/datasets/className/'
+classification_dataset_test_path = f'{project_dir}/classification/datasets/className/test/'

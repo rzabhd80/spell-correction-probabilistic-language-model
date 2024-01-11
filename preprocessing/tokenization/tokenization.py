@@ -4,6 +4,9 @@ from helpers.file_handler import FileHandler
 
 
 class Tokenizer:
+    def __init__(self):
+        self.all_words = None
+
     def __int__(self):
         self.buffer = []
         self.word_dictionary = {}
@@ -29,3 +32,12 @@ class Tokenizer:
 
     def convert_to_lower_case(self) -> None:
         self.all_words = [i.lower() for i in self.all_words]
+
+    def tokenize(self) -> bool:
+        try:
+            self.__generate_dictionary_and_words()
+            self.__count_unique_tokens()
+            return True
+        except:
+            return False
+
