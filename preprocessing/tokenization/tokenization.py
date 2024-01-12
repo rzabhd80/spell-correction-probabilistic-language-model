@@ -15,9 +15,9 @@ class Tokenizer:
 
     def __extract_data(self) -> None:
         self.buffer = FileHandler.read_data_into_buffer(file_path=preprocessing_dataset_name)
-        [i.split(" ") for i in self.buffer if i != " " and i != "\n" and i != "\r"]
-        [j.strip() for i in self.buffer for j in i]
-        self.all_words = [j for i in self.buffer for j in i]
+        self.buffer = [i.split(" ") for i in self.buffer if i != " " and i != "\n" and i != "\r"]
+        self.buffer = [re.sub(r'[^a-zA-Z0-9]+', '', j.strip()) for i in self.buffer for j in i]
+        self.all_words = [re.sub(r'[^a-zA-Z0-9]+', '', j) for i in self.buffer for j in i]
         self.unique_set = set(self.buffer)
 
     def __generate_dictionary_and_words(self) -> None:
@@ -40,4 +40,3 @@ class Tokenizer:
             return True
         except:
             return False
-
