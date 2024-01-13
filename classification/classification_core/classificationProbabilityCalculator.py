@@ -2,9 +2,10 @@ from classificationDataSetGenerator import _ClassificationDataSetGenerator
 from helpers.global_error_handler import global_error_handler
 
 
-class _ClassificationProbabilityCalculator:
+class ClassificationProbabilityCalculator:
     def __int__(self):
         self.classifier_data_extractor = _ClassificationDataSetGenerator.generate_dataset()
+        self.dataset = self.classifier_data_extractor.dataset
         self.trained_model: dict = dict()
 
     @global_error_handler

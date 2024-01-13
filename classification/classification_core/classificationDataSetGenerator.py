@@ -36,8 +36,9 @@ class _ClassificationDataSetGenerator:
     def __calculate_total_types(self):
         self.total_types = len(set([j for i in self.__classes_data for j in i]))
 
-    def __calculate_prior_probability(self) -> list[float]:
-        return [self.dataset_document_count[i] / self.classes_total_num for i in self.__classes]
+    def __calculate_prior_probability(self):
+        result = [self.dataset_document_count[i] / self.classes_total_num for i in self.__classes]
+        return dict(zip(self.__classes, result))
 
     def __generate_tokens_list(self) -> None:
         self.dataset_all_tokens = [j for i in self.__classes_data for j in i]
