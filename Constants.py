@@ -9,4 +9,5 @@ preprocessing_dataset_path = f'{project_dir}/preprocessing/datasets/{preprocessi
 spellingCorrection_dataset_path = f'{project_dir}/spellingCorrection/datasets/{spellingCorrection_dataset_name}'
 classification_main_dataset_path = f'{project_dir}/classification/datasets/'
 classification_dataset_path = f'{project_dir}/classification/datasets/className/'
+classification_test_set_path = f'{project_dir}/classification/datasets/className/test'
 classification_dataset_test_path = f'{project_dir}/classification/datasets/className/test/'
