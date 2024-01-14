@@ -48,6 +48,7 @@ class _ClassificationDataSetGenerator:
         # Attention: make sure that there is nothing but training data directories in classification
         # main dataset path. Otherwise, this code will not count the total number of classes correctly
         all_dataset_classes = os.listdir(classification_main_dataset_path)
+        all_dataset_classes = [i for i in all_dataset_classes if os.path.isdir(i)]
         self.classes_total_num = len(all_dataset_classes)
         [self.__classes.append(i) for i in all_dataset_classes]
         for i in self.__classes:
