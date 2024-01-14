@@ -1,8 +1,7 @@
-from classificationProbabilityCalculator import ClassificationProbabilityCalculator
-import math
+from classification.classification_core.classificationProbabilityCalculator import ClassificationProbabilityCalculator
 
 
-class Classifier:
+class _Classifier:
     def __init__(self):
         self.classifierCalculator = ClassificationProbabilityCalculator()
         self.probabilities = self.classifierCalculator.train()
