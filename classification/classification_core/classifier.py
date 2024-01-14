@@ -1,4 +1,5 @@
 from classification.classification_core.classificationProbabilityCalculator import ClassificationProbabilityCalculator
+import math
 
 
 class _Classifier:

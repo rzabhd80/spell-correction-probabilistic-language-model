@@ -23,13 +23,13 @@ class _ClassificationDataSetGenerator:
         tokens = list()
         total_found_tokens = list()
         path = files_path.replace("className", f"{class_name}")
-        found_files = [i for i in os.listdir(path)]
+        found_files = [i for i in os.listdir(path) if not os.path.isdir(f'{path}/{i}')]
         for i in found_files:
             total_found_docs += 1
             with open(f"{path}/{i}") as file:
                 data = file.readlines()
                 tokens.append([i.split(" ") for i in data])
-            total_found_tokens = [k for i in tokens for j in i for k in j]
+        total_found_tokens = [k for i in tokens for j in i for k in j]
         self.classes_token_count.append(len(total_found_tokens))
         self.__classes_document_count.append(total_found_docs)
         return total_found_tokens
