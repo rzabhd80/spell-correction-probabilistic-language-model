@@ -19,14 +19,13 @@ class Classification:
                 sentences.append(file.readlines())
         return [j for i in sentences for j in i]
 
-    def extract_train_set(self) -> list[str]:
+    def extract_train_set(self) -> list[list[str]]:
         extracted_train_set = list()
         all_dataset_classes = os.listdir(classification_main_dataset_path)
         all_dataset_classes = [i for i in all_dataset_classes if
                                os.path.isdir(f"{classification_main_dataset_path}/{i}")]
         for i in all_dataset_classes:
             extracted_train_set.append(self.__read_test_set(classification_dataset_test_path, i))
-        extracted_train_set = [j for i in extracted_train_set for j in i]
         return extracted_train_set
 
     def classify_test_set_sentence(self, inpt: str):

@@ -10,6 +10,7 @@ class _ClassificationDataSetGenerator:
         self.__classes_data = list()
         self.classes_token_count: list[int] = list()
         self.__classes_document_count: list[int] = list()
+        self.bag_of_words: dict[str:dict[str:int]] = {}
         self.dataset: dict = None
         self.dataset_token_count: dict = None
         self.dataset_prior_probability: dict = None
@@ -18,17 +19,27 @@ class _ClassificationDataSetGenerator:
         self.classes_total_num = 0
         self.total_types = 0
 
+    def __bag_of_words_handler(self, data: list[list[str]], class_name: str) -> None:
+        if class_name not in self.bag_of_words:
+            self.bag_of_words[class_name] = {}
+        data = [j for i in data for j in i]
+        unique_tokens = set(data)
+        for i in unique_tokens:
+            self.bag_of_words[class_name].setdefault(i, 0)
+            self.bag_of_words[class_name][i] += 1
+
     def __read_files_count_doc_merge(self, files_path: str, class_name: str) -> list:
         total_found_docs = 0
         tokens = list()
-        total_found_tokens = list()
         path = files_path.replace("className", f"{class_name}")
         found_files = [i for i in os.listdir(path) if not os.path.isdir(f'{path}/{i}')]
         for i in found_files:
             total_found_docs += 1
             with open(f"{path}/{i}") as file:
                 data = file.readlines()
-                tokens.append([i.split(" ") for i in data])
+                data = [i.split(" ") for i in data]
+                self.__bag_of_words_handler(data, class_name)
+                tokens.append(data)
         total_found_tokens = [k for i in tokens for j in i for k in j]
         self.classes_token_count.append(len(total_found_tokens))
         self.__classes_document_count.append(total_found_docs)

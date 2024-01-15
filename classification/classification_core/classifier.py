@@ -4,9 +4,16 @@ import math
 
 class _Classifier:
     def __init__(self):
+        self.is_model_trained: bool = False
         self.classifierCalculator = ClassificationProbabilityCalculator()
-        self.probabilities = self.classifierCalculator.train()
+        self.probabilities = None
         self.dataset = self.classifierCalculator.dataset
+        self.__check_model_status()
+
+    def __check_model_status(self) -> None:
+        if not self.is_model_trained and self.probabilities is None:
+            self.probabilities = self.classifierCalculator.train()
+            self.is_model_trained = True
 
     def __calculate_unknown_word_probability(self, class_name: str) -> float:
         return 1 / len(
@@ -15,17 +22,12 @@ class _Classifier:
     def __calculate_class_score_for_token(self, token: str, class_name: str) -> float:
         if token not in self.dataset[class_name]:
             return self.__calculate_unknown_word_probability(class_name)
-        return [i[2] for i in self.probabilities if i[0] == class_name and i[1] == token][0]
+        return self.probabilities[class_name][token]
 
     def classify(self, text: str) -> str:
         tokens = [i.strip() for i in text.split(" ")]
-        class_scores = {
-            class_label: sum(
-                math.log(self.__calculate_class_score_for_token(token, class_label))
-
-                for token in tokens
-            )
-            for class_label in self.dataset.keys()
-        }
+        class_scores = dict()
+        for i in self.dataset.keys():
+            class_scores[i] = sum(math.log(self.__calculate_class_score_for_token(token, i)) for token in tokens)
         max_class = max(class_scores, key=class_scores.get)
         return max_class
