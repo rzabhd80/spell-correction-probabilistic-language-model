@@ -18,13 +18,13 @@ class _ClassificationDataSetGenerator:
         self.dataset_all_tokens: list = None
         self.classes_total_num = 0
         self.total_types = 0
+        self.__total_doc_count = 0
 
     def __bag_of_words_handler(self, data: list[list[str]], class_name: str) -> None:
         if class_name not in self.bag_of_words:
             self.bag_of_words[class_name] = {}
         data = [j for i in data for j in i]
-        unique_tokens = set(data)
-        for i in unique_tokens:
+        for i in data:
             self.bag_of_words[class_name].setdefault(i, 0)
             self.bag_of_words[class_name][i] += 1
 
@@ -34,9 +34,11 @@ class _ClassificationDataSetGenerator:
         path = files_path.replace("className", f"{class_name}")
         found_files = [i for i in os.listdir(path) if not os.path.isdir(f'{path}/{i}')]
         for i in found_files:
+            self.__total_doc_count += 1
             total_found_docs += 1
             with open(f"{path}/{i}") as file:
                 data = file.readlines()
+                data = [data[0].split("\t")[1]]
                 data = [i.split(" ") for i in data]
                 self.__bag_of_words_handler(data, class_name)
                 tokens.append(data)
@@ -49,7 +51,7 @@ class _ClassificationDataSetGenerator:
         self.total_types = len(set([j for i in self.__classes_data for j in i]))
 
     def __calculate_prior_probability(self):
-        result = [self.dataset_document_count[i] / self.classes_total_num for i in self.__classes]
+        result = [self.dataset_document_count[i] / self.__total_doc_count for i in self.__classes]
         return dict(zip(self.__classes, result))
 
     def __generate_tokens_list(self) -> None:

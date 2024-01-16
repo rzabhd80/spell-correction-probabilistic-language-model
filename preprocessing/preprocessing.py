@@ -5,7 +5,7 @@ from stemming.stemming import Stemming
 class InputHandler:
     def __init__(self, tokenizer: Tokenizer, stemmer: Stemming):
         self.methods_references = {"tokenize": tokenizer.tokenize, "lowercase conversion":
-            tokenizer.convert_to_lower_case, "stem": stemmer.stem_data}
+                                   tokenizer.convert_to_lower_case, "stem": stemmer.stem_data}
 
     def resolve_input(self, inpt: str) -> None:
         correct_input = False
