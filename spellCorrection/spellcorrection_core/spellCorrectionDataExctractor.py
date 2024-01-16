@@ -7,7 +7,6 @@ from Constants import spellCorrection_dataset_spell_errors, spellCorrection_data
 class SpellCorrectionDataExtractor:
     def __int__(self):
         self.spell_errors = None
-        self.dataset = None
         self.spell_test_set = None
         self.spell_channel_dataset = None
         self.spell_channel_dictionary = None
@@ -31,9 +30,13 @@ class SpellCorrectionDataExtractor:
             file_contents = file.read()
         self.spell_channel_dataset = file_contents.split(" ")
 
+    def __read_dataset(self) -> None:
+        with open(spellCorrection_channel_dataset_path, 'r', encoding='utf-8-sig') as file:
+            file_contents = file.read()
+
     def __read_confusion_matrix(self) -> None:
         self.confusion_matrix = {}
-        operation_list = ['del', 'inst', 'sub', 'Transposition']
+        operation_list = ['del', 'ins', 'sub', 'Transposition']
         for i in operation_list:
             with open(spellCorrection_confusion_matrix.replace("x", f"{i}")) as f:
                 self.confusion_matrix[i] = json.loads(f.read().replace("'", '"'))

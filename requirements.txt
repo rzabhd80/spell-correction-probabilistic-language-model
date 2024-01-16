@@ -1,2 +1,10 @@
-nltk
-numpy
+nltk~=3.8.1
+numpy~=1.26.3
+pip~=23.3.2
+attrs~=21.2.0
+cryptography~=3.4.8
+Pillow~=9.0.1
+keyring~=23.5.0
+setuptools~=69.0.3
+future~=0.18.2
+enchant~=0.0.1
