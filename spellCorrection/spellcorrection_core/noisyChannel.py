@@ -8,14 +8,6 @@ class NoisyChannel:
         self.datasets_instance = SpellCorrectionDataExtractor.extractData()
         self.confusion_matrices = self.datasets_instance.confusion_matrix
 
-    def language_model(self, w, ):
-        count = 0
-        for word in self.datasets_instance.spell_channel_dataset:
-            if w == word:
-                count += 1
-
-        return count / len(self.datasets_instance.spell_channel_dataset)
-
     def __action_probability_measure(self, probability: dict, action: str, count):
         correct_word = probability[f'{action}'].split('|')[1]
         wrong_word = probability[f'{action}'].split('|')[0]
