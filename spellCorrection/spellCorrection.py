@@ -6,7 +6,7 @@ class SpellCorrection:
     def __init__(self):
         self.spell_correction = SpellCorrectionHandler()
 
-    def spell_correction(self):
+    def spell_correction_handler(self):
         probabilities = self.spell_correction.spell_correction()
         with open(output_spellCorrection, "w") as f:
             f.writelines(f.writelines(f'{i}:{probabilities[i]}\t') for i in probabilities.keys())

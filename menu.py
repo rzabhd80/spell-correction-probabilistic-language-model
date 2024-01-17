@@ -11,7 +11,7 @@ class InputHandler:
         self.classification = Classification()
         self.methods_references = {"tokenize": self.preprocessing.tokenize, "lowercase conversion":
             self.preprocessing.to_lower_case, "stem": self.preprocessing.stem,
-                                   "spell correction": self.spell_correction.spell_correction.spell_correction,
+                                   "spell correction": self.spell_correction.spell_correction_handler,
                                    "classification": self.classification_executor}
 
     def resolve_input(self) -> None:
