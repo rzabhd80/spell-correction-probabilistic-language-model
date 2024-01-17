@@ -8,6 +8,6 @@ class SpellCorrection:
 
     def spell_correction(self):
         probabilities = self.spell_correction.spell_correction()
-        with open(output_spellCorrection) as f:
-            f.writelines(probabilities)
+        with open(output_spellCorrection, "w") as f:
+            f.writelines(f.writelines(f'{i}:{probabilities[i]}\t') for i in probabilities.keys())
         print(f"output written into {output_spellCorrection}")

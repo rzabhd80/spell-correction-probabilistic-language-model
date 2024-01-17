@@ -18,10 +18,10 @@ class SpellCorrectionHandler:
 
     def language_model(self, given_word: str):
         count = 0
-        for word in self.datasets_instance:
+        for word in self.datasets_instance.spell_channel_dataset:
             if given_word == word:
                 count += 1
-        return count / len(self.datasets_instance)
+        return count / len(self.datasets_instance.spell_channel_dataset)
 
     def calculate_probability(self, key, values):
         return {

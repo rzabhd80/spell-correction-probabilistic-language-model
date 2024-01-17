@@ -9,9 +9,14 @@ class NoisyChannel:
         self.confusion_matrices = self.datasets_instance.confusion_matrix
 
     def __action_probability_measure(self, probability: dict, action: str, count):
-        correct_word = probability[f'{action}'].split('|')[1]
-        wrong_word = probability[f'{action}'].split('|')[0]
-        data_dict = {"delete": "del", "insert": "inst", "sub": "sub", "trans": "Transposition"}
+        split_result = probability[f'{action}'].split('|')
+        if len(split_result) >= 2:
+            correct_word = split_result[1]
+            wrong_word = split_result[0]
+        else:
+            correct_word = probability['trans'][1]
+            wrong_word = probability['trans'][0]
+        data_dict = {"delete": "del", "insert": "ins", "sub": "sub", "trans": "Transposition"}
         matrix = self.confusion_matrices[f"{data_dict[action]}"]
         matrix_value = matrix[f'{wrong_word + correct_word}']
         for word in self.datasets_instance.spell_channel_dataset:
@@ -20,6 +25,7 @@ class NoisyChannel:
 
     def channel_model(self, probability):
         count = 1
+        #    self.__action_probability_measure("mmd", "mdm", count)
         if 'delete' in probability:
             matrix_value = self.__action_probability_measure(probability, "delete", count)
 
