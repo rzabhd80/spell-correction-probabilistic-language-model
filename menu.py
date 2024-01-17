@@ -9,9 +9,9 @@ class InputHandler:
         self.preprocessing = PreProcessingHandler()
         self.spell_correction = SpellCorrection()
         self.classification = Classification()
-        self.methods_references = {"tokenize": self.preprocessing, "lowercase conversion":
-            self.preprocessing.tokenizer.convert_to_lower_case, "stem": self.preprocessing.stem,
-                                   "spell correction": self.spell_correction,
+        self.methods_references = {"tokenize": self.preprocessing.tokenize, "lowercase conversion":
+            self.preprocessing.to_lower_case, "stem": self.preprocessing.stem,
+                                   "spell correction": self.spell_correction.spell_correction,
                                    "classification": self.classification_executor}
 
     def resolve_input(self) -> None:
