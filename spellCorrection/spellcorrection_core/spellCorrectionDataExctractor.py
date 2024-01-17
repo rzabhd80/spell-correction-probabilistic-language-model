@@ -1,19 +1,20 @@
 import json
 
 from Constants import spellCorrection_dataset_spell_errors, spellCorrection_dataset_train_name, \
-    spellCorrection_channel_dictionary_path, spellCorrection_channel_dataset_path, spellCorrection_confusion_matrix
+    spellCorrection_channel_dictionary_path, spellCorrection_channel_dataset_path, spellCorrection_confusion_matrix, \
+    spellCorrection_dataset_path
 
 
 class SpellCorrectionDataExtractor:
-    def __int__(self):
-        self.spell_errors = None
+    def __init__(self):
+        self.spell_errors = {}
         self.spell_test_set = None
         self.spell_channel_dataset = None
         self.spell_channel_dictionary = None
         self.confusion_matrix = None
 
     def __read_spell_test_set(self):
-        with open(spellCorrection_dataset_train_name) as f:
+        with open(spellCorrection_dataset_path, 'r') as f:
             self.spell_test_set = [i.strip() for i in f.read().split(" ")]
 
     def __read_spell_errors(self) -> None:
@@ -38,7 +39,7 @@ class SpellCorrectionDataExtractor:
         self.confusion_matrix = {}
         operation_list = ['del', 'ins', 'sub', 'Transposition']
         for i in operation_list:
-            with open(spellCorrection_confusion_matrix.replace("x", f"{i}")) as f:
+            with open(spellCorrection_confusion_matrix.replace("action", f"{i}")) as f:
                 self.confusion_matrix[i] = json.loads(f.read().replace("'", '"'))
 
     @classmethod

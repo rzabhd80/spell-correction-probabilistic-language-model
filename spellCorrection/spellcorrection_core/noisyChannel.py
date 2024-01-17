@@ -1,41 +1,49 @@
+import json
+
 from spellCorrection.spellcorrection_core.spellCorrectionDataExctractor import SpellCorrectionDataExtractor
 
 
 class NoisyChannel:
-    def __int__(self):
+    def __init__(self):
         self.datasets_instance = SpellCorrectionDataExtractor.extractData()
         self.confusion_matrices = self.datasets_instance.confusion_matrix
 
-    def __num_different_letters_dp(self, word1, word2):
-        len1, len2 = len(word1), len(word2)
-        dp = [[0] * (26) for _ in range(2)]
-        for i in range(len1):
-            dp[0][ord(word1[i]) - ord('a')] += 1
-        different_letters = 0
-        for i in range(len2):
-            index = ord(word2[i]) - ord('a')
-            if dp[0][index] == 0:
-                different_letters += 1
-            else:
-                dp[0][index] -= 1
-            dp[0], dp[1] = dp[1], dp[0]
-        different_letters += sum(dp[0])
-        return different_letters
-
-    def __calculate_confusion_for_sub_transpose(self, wrong_word, correct_word):
-        return self.confusion_matrices["sub"][f'{wrong_word}{correct_word}'] if self.__num_different_letters_dp(
-            wrong_word, correct_word) == 1 else self.confusion_matrices["Transposition"][f'{wrong_word}{correct_word}']
-
-    def __calculate_confusion_for_insertion_deletion(self, wrong_word: str, correct_word: str):
-        return self.confusion_matrices['ins'][f'{wrong_word}{correct_word}'] if len(wrong_word) > len(correct_word) else \
-            self.confusion_matrices['del'][f'{wrong_word}{correct_word}']
-
-    def noisy_channel_model(self, wrong_word: str, correct_word: str):
-        confusion_value = self.__calculate_confusion_for_sub_transpose(wrong_word, correct_word) if len(
-            wrong_word) == len(
-            correct_word) else self.__calculate_confusion_for_insertion_deletion(wrong_word, correct_word)
-        count = 1
+    def language_model(self, w, ):
+        count = 0
         for word in self.datasets_instance.spell_channel_dataset:
-            count += word.count(f'{wrong_word}{correct_word}')
+            if w == word:
+                count += 1
 
-        return confusion_value / count
+        return count / len(self.datasets_instance.spell_channel_dataset)
+
+    def __action_probability_measure(self, probability: dict, action: str, count):
+        correct_word = probability[f'{action}'].split('|')[1]
+        wrong_word = probability[f'{action}'].split('|')[0]
+        data_dict = {"delete": "del", "insert": "inst", "sub": "sub", "trans": "Transposition"}
+        matrix = self.confusion_matrices[f"{data_dict[action]}"]
+        matrix_value = matrix[f'{wrong_word + correct_word}']
+        for word in self.datasets_instance.spell_channel_dataset:
+            count += word.count(f'{wrong_word + correct_word}')
+        return matrix_value
+
+    def channel_model(self, probability):
+        count = 1
+        if 'delete' in probability:
+            matrix_value = self.__action_probability_measure(probability, "delete", count)
+
+        elif 'insert' in probability:
+            matrix_value = self.__action_probability_measure(probability, "insert", count)
+
+        elif 'trans' in probability:
+
+            matrix_value = self.__action_probability_measure(probability, "trans", count)
+
+        elif 'sub' in probability:
+
+            matrix_value = self.__action_probability_measure(probability, "sub", count)
+
+        else:
+            matrix_value = 95
+            count = 100
+
+        return matrix_value / count

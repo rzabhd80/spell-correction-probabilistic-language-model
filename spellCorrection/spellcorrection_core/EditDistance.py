@@ -3,27 +3,77 @@ class _EditDistance:
         pass
 
     @classmethod
-    def min_edit_distance(cls, wrong_words, correct_word):
-        len_word1 = len(wrong_words)
-        len_word2 = len(correct_word)
+    def min_edit_distance(cls, word1, word2):
+        len_word1 = len(word1)
+        len_word2 = len(word2)
 
-        med_table = [[0] * (len_word2 + 1) for _ in range(len_word1 + 1)]
+        dp = [[0] * (len_word2 + 1) for _ in range(len_word1 + 1)]
+        operations = [[""] * (len_word2 + 1) for _ in range(len_word1 + 1)]
 
         for i in range(len_word1 + 1):
-            med_table[i][0] = i
+            dp[i][0] = i
+            operations[i][0] = 'D'
         for j in range(len_word2 + 1):
-            med_table[0][j] = j
+            dp[0][j] = j
+            operations[0][j] = 'I'
 
         for i in range(1, len_word1 + 1):
             for j in range(1, len_word2 + 1):
-                cost = 1  # Uniform cost for all operations
-                med_table[i][j] = min(
-                    med_table[i - 1][j] + cost,  # Deletion
-                    med_table[i][j - 1] + cost,  # Insertion
-                    med_table[i - 1][j - 1] + (0 if wrong_words[i - 1] == correct_word[j - 1] else cost)  # Substitution
+                cost = 1
+                dp[i][j] = min(
+                    dp[i - 1][j] + cost,  # Deletion
+                    dp[i][j - 1] + cost,  # Insertion
+                    dp[i - 1][j - 1] + (0 if word1[i - 1] == word2[j - 1] else cost)  # Substitution
                 )
-                if i > 1 and j > 1 and wrong_words[i - 1] == correct_word[j - 2] and wrong_words[i - 2] == correct_word[
-                    j - 1]:
-                    med_table[i][j] = min(med_table[i][j], med_table[i - 2][j - 2] + cost)  # Transposition
+                if i > 1 and j > 1 and word1[i - 1] == word2[j - 2] and word1[i - 2] == word2[j - 1]:
+                    dp[i][j] = min(dp[i][j], dp[i - 2][j - 2] + cost)
 
-        return med_table[len_word1][len_word2]
+                # print(i,j,dp[i][j])
+                if dp[i][j] == dp[i - 1][j] + cost:
+                    operations[i][j] = "D"  # Deletion
+                elif dp[i][j] == dp[i][j - 1] + cost:
+                    operations[i][j] = "I"  # Insertion
+                elif dp[i][j] == dp[i - 1][j - 1] + (0 if word1[i - 1] == word2[j - 1] else cost):
+                    operations[i][j] = "S" if word1[i - 1] != word2[j - 1] else ""  # Substitution
+
+                if i > 1 and j > 1 and word1[i - 1] == word2[j - 2] and word1[i - 2] == word2[j - 1]:
+                    dp[i][j] = min(dp[i][j], dp[i - 2][j - 2] + cost)
+                    if dp[i][j] == dp[i - 2][j - 2] + cost:
+                        operations[i][j] = "T"
+        i, j = len_word1, len_word2
+        distance = dp[i][j]
+        if distance > 1:
+            return [2, '']
+        changes = {}
+
+        while i > 0 or j > 0:
+            operation = operations[i][j]
+
+            if operation == "D":
+                if i != 1:
+                    changes["insert"] = f'{word1[i - 2]}|{word1[i - 1]}'
+                else:
+                    changes["insert"] = f'{word1[i]}|{word1[i - 1]}'
+                i -= 1
+            elif operation == "I":
+                if j != 1:
+                    changes["delete"] = f'{word2[j - 2]}|{word2[j - 1]}'
+                else:
+
+
+                    changes["delete"] = f'{word2[j]}|{word2[j - 1]}'
+
+                j -= 1
+            elif operation == "S":
+                changes["sub"] = f'{word1[i - 1]}|{word2[i - 1]}'
+                i -= 1
+                j -= 1
+            elif operation == "T":
+                changes["trans"] = f'{word1[i - 2:i]}'
+                i -= 2
+                j -= 2
+            else:
+                i -= 1
+                j -= 1
+
+        return [distance, changes]
