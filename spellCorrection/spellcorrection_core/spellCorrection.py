@@ -1,8 +1,6 @@
 import enchant
-
+from spellCorrection.spellcorrection_core.EditDistance import _EditDistance
 from spellCorrection.spellcorrection_core.noisyChannel import NoisyChannel
-from spellCorrectionDataExctractor import SpellCorrectionDataExtractor
-from EditDistance import _EditDistance
 
 
 class SpellCorrectionHandler:
@@ -30,6 +28,7 @@ class SpellCorrectionHandler:
         probs = {key: max(
             (value for value in values if self.edit_distance_calculator(key, value)[0] <= 1),
             key=lambda value: self.noisy_channel.noisy_channel_model(key, value) * self.language_model(value,
-            self.datasets_instance) * (0 ** 9), default='') for key, values in candidates.items()}
+                                                                                                       self.datasets_instance) * (
+                                          0 ** 9), default='') for key, values in candidates.items()}
 
         return probs

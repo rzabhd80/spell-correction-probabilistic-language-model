@@ -1,6 +1,6 @@
 from Constants import output_preprocessing_stem, output_preprocessing_tokenizer, output_preprocessing_lowercase
-from tokenization.tokenization import Tokenizer
-from stemming.stemming import Stemming
+from preprocessing.stemming.stemming import Stemming
+from preprocessing.tokenization.tokenization import Tokenizer
 
 
 class PreProcessingHandler:

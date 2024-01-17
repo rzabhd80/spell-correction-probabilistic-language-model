@@ -1,6 +1,6 @@
+from classification.classification import Classification
 from preprocessing.preprocessing import PreProcessingHandler
 from spellCorrection.spellCorrection import SpellCorrection
-from classification.classification import Classification
 
 
 class InputHandler:
@@ -12,8 +12,7 @@ class InputHandler:
         self.methods_references = {"tokenize": self.preprocessing, "lowercase conversion":
             self.preprocessing.tokenizer.convert_to_lower_case, "stem": self.preprocessing.stem,
                                    "spell correction": self.spell_correction,
-                                   "classification": [print(self.classification.classify_test_set_sentence(j)) for i in
-                                                      self.classification.extract_train_set() for j in i]}
+                                   "classification": self.classification_executor}
 
     def resolve_input(self) -> None:
         correct_input = False
@@ -25,6 +24,10 @@ class InputHandler:
             correct_input = True if given_operation in self.methods_references.keys() else None
         [self.methods_references[i]() for i in self.methods_references.keys() if i == given_operation]
         print("output written in file")
+
+    def classification_executor(self):
+        [print(self.classification.classify_test_set_sentence(j)) for i in self.classification.extract_train_set() for j
+         in i]
 
     def menu_handler(self):
         exit_command = False
