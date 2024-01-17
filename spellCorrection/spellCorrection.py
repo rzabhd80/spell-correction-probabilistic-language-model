@@ -9,5 +9,5 @@ class SpellCorrection:
     def spell_correction_handler(self):
         probabilities = self.spell_correction.spell_correction()
         with open(output_spellCorrection, "w") as f:
-            f.writelines(f.writelines(f'{i}:{probabilities[i]}\t') for i in probabilities.keys())
+            f.writelines(f'{probabilities}\t')
         print(f"output written into {output_spellCorrection}")
