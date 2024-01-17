@@ -18,6 +18,6 @@ spellCorrection_channel_dataset_path = f"{project_dir}/spellCorrection/dataset/D
 spellCorrection_channel_dictionary_path = f'{project_dir}/spellCorrection/dataset/test/Dictionary/dictionary.Data.txt'
 spellCorrection_confusion_matrix = f'{project_dir}/spellCorrection/dataset/test/Confusion Matrix/x-confusion.data.txt'
 output_preprocessing_stem = f"{project_dir}/out/preProcessing/stem_output.txt"
-output_preprocessing_tokenizer = f"{project_dir}/out/preProcessing/stem_output.txt"
+output_preprocessing_tokenizer = f"{project_dir}/out/preProcessing/tokenize_output.txt"
 output_preprocessing_lowercase = f"{project_dir}/out/preProcessing/lowerCase.txt"
 output_spellCorrection = f"{project_dir}/out/spellCorrection"
