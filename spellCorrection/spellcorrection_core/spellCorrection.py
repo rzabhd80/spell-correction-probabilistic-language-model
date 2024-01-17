@@ -1,8 +1,6 @@
-import enchant
 from spellCorrection.spellcorrection_core.EditDistance import _EditDistance
 from spellCorrection.spellcorrection_core.noisyChannel import NoisyChannel
-
-
+import enchant
 class SpellCorrectionHandler:
     def __int__(self):
         self.noisy_channel = NoisyChannel()

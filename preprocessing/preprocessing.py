@@ -21,7 +21,7 @@ class PreProcessingHandler:
         print(f"\nlower case conversion output written to {output_preprocessing_lowercase}\n")
 
     def stem(self):
-        stemmed_words = self.stemmer.stemmer()
+        stemmed_words = self.stemmer.stem_data()
         with open(output_preprocessing_stem, 'w') as f:
             [f.writelines(f'{i}\t') for i in stemmed_words]
         print(f"\n stemming output written into {output_preprocessing_stem}")
