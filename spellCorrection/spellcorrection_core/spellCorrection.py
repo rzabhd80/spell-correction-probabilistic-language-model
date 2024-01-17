@@ -5,7 +5,7 @@ from spellCorrectionDataExctractor import SpellCorrectionDataExtractor
 from EditDistance import _EditDistance
 
 
-class SpellCorrection:
+class SpellCorrectionHandler:
     def __int__(self):
         self.noisy_channel = NoisyChannel()
         self.datasets_instance = self.noisy_channel.datasets_instance
@@ -20,9 +20,7 @@ class SpellCorrection:
         return count / len(dataset)
 
     def spell_correction(self):
-        punctuation = [' ', "'", '-']
         candidates = {}
-        probabilities = {}
         d = enchant.Dict("en_US")
         for word in self.datasets_instance.spell_test_set:
             suggestions = d.suggest(word)

@@ -1,27 +1,27 @@
+from Constants import output_preprocessing_stem, output_preprocessing_tokenizer, output_preprocessing_lowercase
 from tokenization.tokenization import Tokenizer
 from stemming.stemming import Stemming
 
 
-class InputHandler:
-    def __init__(self, tokenizer: Tokenizer, stemmer: Stemming):
-        self.methods_references = {"tokenize": tokenizer.tokenize, "lowercase conversion":
-                                   tokenizer.convert_to_lower_case, "stem": stemmer.stem_data}
-
-    def resolve_input(self, inpt: str) -> None:
-        correct_input = False
-        while not correct_input:
-            given_operation = input("type the operation:\n tokenizer\n lowercase conversion\n stem\n")
-            correct_input = True if given_operation in self.methods_references.keys() else None
-        [self.methods_references[i]() for i in self.methods_references.keys() if i == inpt]
-
-
 class PreProcessingHandler:
-    def __int__(self, inpt: str):
+    def __init__(self):
         self.tokenizer = Tokenizer()
         self.stemmer = Stemming()
-        self.input_handler = InputHandler(tokenizer=self.tokenizer, stemmer=self.stemmer)
-        self.input_handler.resolve_input(inpt)
 
+    def tokenize(self):
+        all_words = self.tokenizer.tokenize()
+        with open(output_preprocessing_tokenizer) as f:
+            f.writelines(all_words)
+        print(f"\ntokenization output written to {output_preprocessing_tokenizer}\n")
 
-if __name__ == "__main__":
-    pass
+    def to_lower_case(self):
+        lower_cased_words = self.tokenizer.convert_to_lower_case()
+        with open(output_preprocessing_lowercase) as f:
+            f.writelines(lower_cased_words)
+            print(f"\nlower case conversion output written to {output_preprocessing_lowercase}\n")
+
+    def stem(self):
+        stemmed_words = self.stemmer.stemmer()
+        with open(output_preprocessing_stem) as f:
+            f.writelines(stemmed_words)
+        print(f"\n stemming output written into {output_preprocessing_stem}")
